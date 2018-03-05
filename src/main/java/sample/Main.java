@@ -3,8 +3,12 @@ package sample;
 import com.google.gson.Gson;
 import com.intel.bluetooth.RemoteDeviceHelper;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import okhttp3.OkHttpClient;
@@ -16,12 +20,11 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import javax.bluetooth.*;
-import javax.microedition.io.Connection;
 import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -29,6 +32,8 @@ public class Main extends Application {
 
     private static Retrofit api;
     private static RConnectorService rConnectorService;
+
+    private final static int PACKAGE_SIZE = 5;
 
     private final static int WIDTH = 1920;
     private final static int HEIGHT = 1080;
@@ -43,23 +48,69 @@ public class Main extends Application {
     private ArrayList<RemoteDevice> remoteDevices = new ArrayList<RemoteDevice>();
     private ArrayList<ServiceRecord> serviceRecords = new ArrayList<ServiceRecord>();
 
+    private ArrayList<Double> x = new ArrayList<Double>();
+    private ArrayList<Double> y = new ArrayList<Double>();
+
+    private ArrayList<Double> xCurrent;
+    private ArrayList<Double> yCurrent;
+
+    private boolean isX = true;
+    private int counter = 0;
+
+    private Stage primaryStage;
+    private ProgressIndicator progress;
+    private Button bluetoothButton;
+
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
         //    Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         //    primaryStage.setTitle("Hello World");
 
 
+        // init circle
         circle = new Circle();
         circle.setCenterX(0.0f);
         circle.setCenterY(0.0f);
         circle.setRadius(15.0f);
+        circle.setVisible(false);
 
-        Group root = new Group(circle);
+        // init loading indicator
+        progress = new ProgressIndicator();
+        progress.setPrefSize(100, 100);
+        progress.setLayoutX(WIDTH / 2);
+        progress.setLayoutY(HEIGHT / 2);
+        progress.setVisible(false);
+
+        // init bluetooth discover button
+        bluetoothButton = new Button("Bluetooth start");
+        bluetoothButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                bluetoothInit();
+            }
+        });
+        bluetoothButton.setLayoutX(WIDTH / 2);
+        bluetoothButton.setLayoutY(HEIGHT / 2);
+
+        Group root = new Group(circle, progress, bluetoothButton);
 
         primaryStage.setScene(new Scene(root, WIDTH, HEIGHT));
         primaryStage.show();
 
         login();
+    }
+
+    private void startLoading() {
+        progress.setVisible(true);
+        circle.setVisible(false);
+        bluetoothButton.setVisible(false);
+    }
+
+    private void stopLoading() {
+        progress.setVisible(false);
+        circle.setVisible(true);
+        bluetoothButton.setVisible(true);
     }
 
     private void login() {
@@ -72,7 +123,6 @@ public class Main extends Application {
                     UserResult result = response.body();
                     if (result != null) {
                         userId = result.id;
-                        makeCall();
                     }
                 }
             }
@@ -140,8 +190,9 @@ public class Main extends Application {
 
                     RemoteDeviceHelper.authenticate(record.getHostDevice());
 
+                    stopLoading();
                     ProcessConnectionThread processConnectionThread = new ProcessConnectionThread(connection);
-                    processConnectionThread.run();
+                    processConnectionThread.start();
                     /*DataInputStream dataInputStream = connection.openDataInputStream();
 
                     ArrayList<Double> x = new ArrayList<Double>();
@@ -169,7 +220,7 @@ public class Main extends Application {
 
     }
 
-    class WaitThread implements Runnable {
+    class WaitThread extends Thread {
 
         /**
          * Constructor
@@ -216,7 +267,7 @@ public class Main extends Application {
                         UUID[] uuidSet = new UUID[1];
                         uuidSet[0] = new UUID(0x0100);
                         int[] attrIds = {0x0100};
-                 //       agent.searchServices(attrIds, uuidSet, device, discoveryListener);
+                        //       agent.searchServices(attrIds, uuidSet, device, discoveryListener);
                         UUID[] uuids = new UUID[1];
                         uuids[0] = new UUID("0cbb85aa795141a6b891b2ee53960860", false);
                         agent.searchServices(null, uuids, device, discoveryListener);
@@ -272,12 +323,12 @@ public class Main extends Application {
         }
     }
 
-    class ProcessConnectionThread implements Runnable {
+    class ProcessConnectionThread extends Thread {
 
         private StreamConnection mConnection;
 
         // Constant that indicate command from devices
-        private static final int EXIT_CMD = -1;
+        private static final int EXIT_CMD = -1000;
         private static final int KEY_RIGHT = 1;
         private static final int KEY_LEFT = 2;
 
@@ -289,21 +340,45 @@ public class Main extends Application {
         public void run() {
             try {
                 // prepare to receive data
-                InputStream inputStream = mConnection.openInputStream();
+                //    InputStream inputStream = mConnection.openInputStream();
 
                 System.out.println("waiting for input");
 
+                DataInputStream dataInputStream = mConnection.openDataInputStream();
                 while (true) {
-                    int command = inputStream.read();
 
-                    System.out.println("Received: " + command);
+                    //    int command = inputStream.read();
+                    double value = dataInputStream.readDouble();
+                    //        System.out.println("Received: " + value);
 
-                    if (command == EXIT_CMD) {
+                    if (isX) {
+                        x.add(value);
+                    } else {
+                        y.add(value);
+                    }
+
+                    counter++;
+                    if (counter >= PACKAGE_SIZE) {
+                        isX = !isX;
+                        counter = 0;
+                        if (isX) { // when we have x + y arrays
+                            xCurrent = new ArrayList<Double>(x.subList(x.size() - PACKAGE_SIZE, x.size()));
+                            yCurrent = new ArrayList<Double>(y.subList(y.size() - PACKAGE_SIZE, y.size()));
+                            System.out.println("moveCircle");
+                            moveCircle();
+                        }
+                    }
+
+                    if (value == EXIT_CMD) {
                         System.out.println("finish process");
                         break;
                     }
-                    processCommand(command);
+
+                    processCommand(value);
                 }
+            } catch (EOFException eofException) {
+                // socket closed on server side
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -314,7 +389,7 @@ public class Main extends Application {
          *
          * @param command the command code
          */
-        private void processCommand(int command) {
+        private void processCommand(double command) {
             try {
                /* Robot robot = new Robot();
                 switch (command) {
@@ -333,9 +408,28 @@ public class Main extends Application {
         }
     }
 
-    private void makeCall() {
+    private void moveCircle() {
+        //    for (int i = 0; i < xCurrent.size() && i < yCurrent.size(); i++) {
+        double x = adjust(xCurrent.get(xCurrent.size() - 1), WIDTH, true);
+        double y = adjust(yCurrent.get(yCurrent.size() - 1), HEIGHT, false);
+
+        circle.setLayoutX(x);
+        circle.setLayoutY(y);
+        System.out.println("X: " + x + " Y: " + y);
+        //     }
+
+     /*   try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+    }
+
+    private void bluetoothInit() {
+        startLoading();
+
         WaitThread thread = new WaitThread();
-        thread.waitForConnection();
+        thread.start();
 
        /* RConnectorService restService = restService();
         Call<AccelerometerResult> call = restService.fetchAccelerometerData(userId); // 292
@@ -379,7 +473,7 @@ public class Main extends Application {
                     }
                 }
 
-                makeCall();
+                bluetoothInit();
             }
 
             @Override
