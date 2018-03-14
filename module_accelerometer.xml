@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_accelerometer" default="compile.module.accelerometer">
+  <dirname property="module.accelerometer.basedir" file="${ant.file.module_accelerometer}"/>
+  
+  <property name="module.jdk.home.accelerometer" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.accelerometer" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.accelerometer" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.accelerometer" value="-encoding UTF-8 -source 1.8 -target 1.8 ${compiler.args}"/>
+  
+  <property name="accelerometer.output.dir" value="${module.accelerometer.basedir}/target/classes"/>
+  <property name="accelerometer.testoutput.dir" value="${module.accelerometer.basedir}/target/test-classes"/>
+  
+  <path id="accelerometer.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="accelerometer.module.production.classpath">
+    <path refid="${module.jdk.classpath.accelerometer}"/>
+    <pathelement location="${basedir}/src/bluecove-2.1.1-SNAPSHOT.jar"/>
+    <path refid="library.maven:_com.squareup.retrofit2:retrofit:2.3.0.classpath"/>
+    <path refid="library.maven:_com.squareup.okhttp3:okhttp:3.8.0.classpath"/>
+    <path refid="library.maven:_com.squareup.okio:okio:1.13.0.classpath"/>
+    <path refid="library.maven:_com.google.code.gson:gson:2.8.2.classpath"/>
+    <path refid="library.maven:_com.squareup.okhttp3:logging-interceptor:3.8.1.classpath"/>
+    <path refid="library.maven:_com.squareup.retrofit2:converter-gson:2.3.0.classpath"/>
+  </path>
+  
+  <path id="accelerometer.runtime.production.module.classpath">
+    <pathelement location="${accelerometer.output.dir}"/>
+    <pathelement location="${basedir}/src/bluecove-2.1.1-SNAPSHOT.jar"/>
+    <path refid="library.maven:_com.squareup.retrofit2:retrofit:2.3.0.classpath"/>
+    <path refid="library.maven:_com.squareup.okhttp3:okhttp:3.8.0.classpath"/>
+    <path refid="library.maven:_com.squareup.okio:okio:1.13.0.classpath"/>
+    <path refid="library.maven:_com.google.code.gson:gson:2.8.2.classpath"/>
+    <path refid="library.maven:_com.squareup.okhttp3:logging-interceptor:3.8.1.classpath"/>
+    <path refid="library.maven:_com.squareup.retrofit2:converter-gson:2.3.0.classpath"/>
+  </path>
+  
+  <path id="accelerometer.module.classpath">
+    <path refid="${module.jdk.classpath.accelerometer}"/>
+    <pathelement location="${accelerometer.output.dir}"/>
+    <pathelement location="${basedir}/src/bluecove-2.1.1-SNAPSHOT.jar"/>
+    <path refid="library.maven:_com.squareup.retrofit2:retrofit:2.3.0.classpath"/>
+    <path refid="library.maven:_com.squareup.okhttp3:okhttp:3.8.0.classpath"/>
+    <path refid="library.maven:_com.squareup.okio:okio:1.13.0.classpath"/>
+    <path refid="library.maven:_com.google.code.gson:gson:2.8.2.classpath"/>
+    <path refid="library.maven:_com.squareup.okhttp3:logging-interceptor:3.8.1.classpath"/>
+    <path refid="library.maven:_com.squareup.retrofit2:converter-gson:2.3.0.classpath"/>
+  </path>
+  
+  <path id="accelerometer.runtime.module.classpath">
+    <pathelement location="${accelerometer.testoutput.dir}"/>
+    <pathelement location="${accelerometer.output.dir}"/>
+    <pathelement location="${basedir}/src/bluecove-2.1.1-SNAPSHOT.jar"/>
+    <path refid="library.maven:_com.squareup.retrofit2:retrofit:2.3.0.classpath"/>
+    <path refid="library.maven:_com.squareup.okhttp3:okhttp:3.8.0.classpath"/>
+    <path refid="library.maven:_com.squareup.okio:okio:1.13.0.classpath"/>
+    <path refid="library.maven:_com.google.code.gson:gson:2.8.2.classpath"/>
+    <path refid="library.maven:_com.squareup.okhttp3:logging-interceptor:3.8.1.classpath"/>
+    <path refid="library.maven:_com.squareup.retrofit2:converter-gson:2.3.0.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.accelerometer">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.accelerometer">
+    <patternset refid="excluded.from.module.accelerometer"/>
+  </patternset>
+  
+  <path id="accelerometer.module.sourcepath">
+    <dirset dir="${module.accelerometer.basedir}">
+      <include name="src/main/java"/>
+      <include name="src/main/resources"/>
+    </dirset>
+  </path>
+  
+  <path id="accelerometer.module.test.sourcepath">
+    <dirset dir="${module.accelerometer.basedir}">
+      <include name="src/test/java"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.accelerometer" depends="compile.module.accelerometer.production,compile.module.accelerometer.tests" description="Compile module Accelerometer"/>
+  
+  <target name="compile.module.accelerometer.production" depends="register.custom.compilers" description="Compile module Accelerometer; production classes">
+    <mkdir dir="${accelerometer.output.dir}"/>
+    <javac2 destdir="${accelerometer.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.accelerometer}/javac">
+      <compilerarg line="${compiler.args.accelerometer}"/>
+      <bootclasspath refid="accelerometer.module.bootclasspath"/>
+      <classpath refid="accelerometer.module.production.classpath"/>
+      <src refid="accelerometer.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.accelerometer"/>
+    </javac2>
+    
+    <copy todir="${accelerometer.output.dir}">
+      <fileset dir="${module.accelerometer.basedir}/src/main/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.accelerometer.basedir}/src/main/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.accelerometer.tests" depends="register.custom.compilers,compile.module.accelerometer.production" description="compile module Accelerometer; test classes" unless="skip.tests">
+    <mkdir dir="${accelerometer.testoutput.dir}"/>
+    <javac2 destdir="${accelerometer.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.accelerometer}/javac">
+      <compilerarg line="${compiler.args.accelerometer}"/>
+      <bootclasspath refid="accelerometer.module.bootclasspath"/>
+      <classpath refid="accelerometer.module.classpath"/>
+      <src refid="accelerometer.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.accelerometer"/>
+    </javac2>
+    
+    <copy todir="${accelerometer.testoutput.dir}">
+      <fileset dir="${module.accelerometer.basedir}/src/test/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.accelerometer" description="cleanup module">
+    <delete dir="${accelerometer.output.dir}"/>
+    <delete dir="${accelerometer.testoutput.dir}"/>
+  </target>
+</project>

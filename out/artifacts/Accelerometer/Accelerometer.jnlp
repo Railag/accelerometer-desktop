@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="Accelerometer.jnlp">
+  <information>
+    <title>Accelerometer</title>
+    <vendor>Unknown</vendor>
+    <description>Accelerometer</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="Accelerometer.jar" size="17013" download="eager" />
+    <jar href="bluecove-2.1.1-SNAPSHOT.jar" size="663800" download="eager" />
+    <jar href="converter-gson-2.3.0.jar" size="5852" download="eager" />
+    <jar href="gson-2.8.2.jar" size="232932" download="eager" />
+    <jar href="logging-interceptor-3.8.1.jar" size="8268" download="eager" />
+    <jar href="okhttp-3.8.0.jar" size="398107" download="eager" />
+    <jar href="okio-1.13.0.jar" size="81811" download="eager" />
+    <jar href="retrofit-2.3.0.jar" size="90692" download="eager" />
+  </resources>
+  <jfx:javafx-desc  width="600" height="400" main-class="sample.Main"  name="Accelerometer" />
+  <update check="background"/>
+</jnlp>

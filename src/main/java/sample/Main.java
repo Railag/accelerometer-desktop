@@ -3,12 +3,14 @@ package sample;
 import com.google.gson.Gson;
 import com.intel.bluetooth.RemoteDeviceHelper;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
@@ -29,6 +31,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class Main extends Application {
 
@@ -42,16 +45,15 @@ public class Main extends Application {
 
     private final static double THRESHOLD_ACCELEROMETER_MAX = 7.0;
 
-    private Circle circle;
     private long userId = -1;
 
     private long latestEventId = -1;
 
-    private ArrayList<RemoteDevice> remoteDevices = new ArrayList<RemoteDevice>();
-    private ArrayList<ServiceRecord> serviceRecords = new ArrayList<ServiceRecord>();
+    private ArrayList<RemoteDevice> remoteDevices = new ArrayList<>();
+    private ArrayList<ServiceRecord> serviceRecords = new ArrayList<>();
 
-    private ArrayList<Double> x = new ArrayList<Double>();
-    private ArrayList<Double> y = new ArrayList<Double>();
+    private ArrayList<Double> x = new ArrayList<>();
+    private ArrayList<Double> y = new ArrayList<>();
 
     private ArrayList<Double> xCurrent;
     private ArrayList<Double> yCurrent;
@@ -60,13 +62,18 @@ public class Main extends Application {
     private int counter = 0;
 
     private Stage primaryStage;
+    private Circle circle;
     private ProgressIndicator progress;
-    private Button bluetoothButton;
+    private Button bluetoothButton, listButton;
+    private ListView<String> list;
+
     private DiscoveryAgent agent;
 
     private WaitThread waitThread;
     private ProcessConnectionThread processConnectionThread;
     private int transactionSearchId;
+
+    private String deviceName = "";
 
     @Override
     public void start(Stage primaryStage) {
@@ -99,18 +106,35 @@ public class Main extends Application {
         progress.setLayoutY(height / 2);
         progress.setVisible(false);
 
+        list = new ListView<String>();
+        list.setLayoutX(200);
+        list.setLayoutY(300);
+        list.setVisible(false);
+
+
         // init bluetooth discover button
-        bluetoothButton = new Button("Bluetooth start");
-        bluetoothButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                bluetoothInit();
+        bluetoothButton = new Button("Discover");
+        bluetoothButton.setOnAction(event -> {
+            if (discovered) {
+                stopBluetooth();
             }
+
+            bluetoothInit();
         });
         bluetoothButton.setLayoutX(width / 2);
         bluetoothButton.setLayoutY(height / 2 - 50);
 
-        Group root = new Group(circle, progress, bluetoothButton);
+        listButton = new Button("Connect");
+        listButton.setOnAction(event -> {
+            deviceName = list.getSelectionModel().getSelectedItem();
+            System.out.println("Device name: " + deviceName);
+            discover(deviceName);
+        });
+        listButton.setLayoutX(width / 2);
+        listButton.setLayoutY(height / 2 - 100);
+        listButton.setVisible(false);
+
+        Group root = new Group(circle, progress, bluetoothButton, list, listButton);
 
         primaryStage.setScene(new Scene(root, width, height));
         primaryStage.show();
@@ -166,6 +190,20 @@ public class Main extends Application {
 
             remoteDevices.add(btDevice);
 
+            Platform.runLater(() -> {
+                ObservableList<String> items = FXCollections.observableArrayList(remoteDevices.stream().map(device -> {
+                    try {
+                        return device.getFriendlyName(false);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return device.getBluetoothAddress();
+                    }
+                }).collect(Collectors.toList()));
+
+                list.setVisible(true);
+                list.setItems(items);
+            });
+
             System.out.println("device found: " + name);
         }
 
@@ -181,10 +219,8 @@ public class Main extends Application {
             System.out.println("serviceSearchCompleted");
 
             if (!discovered) {
-                discover();
+                discover(deviceName);
             }
-
-            //        broadcastCommand("Hello world!");
         }
 
         @Override
@@ -192,6 +228,12 @@ public class Main extends Application {
             System.out.println("servicesDiscovered");
 
             discovered = true;
+
+            Platform.runLater(() -> {
+                list.setVisible(false);
+                listButton.setVisible(false);
+            });
+
 
             serviceRecords.addAll(Arrays.asList(arg1));
 
@@ -204,7 +246,7 @@ public class Main extends Application {
         }
     };
 
-    private void discover() {
+    private void discover(String deviceName) {
         if (agent == null) {
             System.out.println("Discover: null agent");
             return;
@@ -213,11 +255,13 @@ public class Main extends Application {
         try {
             for (RemoteDevice device : remoteDevices) {
                 String name = device.getFriendlyName(false);
-                if (name.equalsIgnoreCase("Railag")) {
+                //    if (name.equalsIgnoreCase("Railag")) {
+                if (name.equalsIgnoreCase(deviceName)) {
                     UUID[] uuidSet = new UUID[1];
                     uuidSet[0] = new UUID(0x0100);
                     UUID[] uuids = new UUID[1];
                     uuids[0] = new UUID("0cbb85aa795141a6b891b2ee53960860", false);
+                    // TODO fix transaction ids, multiple javax.bluetooth.BluetoothStateException: Already running 7 service discovery transactions
                     transactionSearchId = agent.searchServices(null, uuids, device, discoveryListener);
                 }
             }
@@ -236,7 +280,7 @@ public class Main extends Application {
 
                     RemoteDeviceHelper.authenticate(record.getHostDevice());
 
-                    stopLoading();
+                    Platform.runLater(this::stopLoading);
                     processConnectionThread = new ProcessConnectionThread(connection);
                     processConnectionThread.start();
 
@@ -289,7 +333,7 @@ public class Main extends Application {
                /* UUID[] uuids = new UUID[1];
                 uuids[0] = new UUID(0x1101);*/
 
-                discover();
+                Platform.runLater(() -> listButton.setVisible(true));
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -299,7 +343,7 @@ public class Main extends Application {
         public void cancel() {
             if (agent != null) {
                 agent.cancelInquiry(discoveryListener);
-                agent.cancelServiceSearch(transactionSearchId);
+                //    agent.cancelServiceSearch(transactionSearchId);
                 transactionSearchId = -1;
             }
         }
@@ -339,10 +383,24 @@ public class Main extends Application {
                         isX = !isX;
                         counter = 0;
                         if (isX) { // when we have x + y arrays
-                            xCurrent = new ArrayList<Double>(x.subList(x.size() - PACKAGE_SIZE, x.size()));
-                            yCurrent = new ArrayList<Double>(y.subList(y.size() - PACKAGE_SIZE, y.size()));
+                            xCurrent = new ArrayList<>(x.subList(x.size() - PACKAGE_SIZE, x.size()));
+                            yCurrent = new ArrayList<>(y.subList(y.size() - PACKAGE_SIZE, y.size()));
                             System.out.println("moveCircle");
-                            moveCircle();
+                            Platform.runLater(Main.this::moveCircle);
+/*                            javafx.animation.Timeline timeline = new Timeline();
+                            timeline.setCycleCount(Timeline.INDEFINITE);
+                            timeline.setAutoReverse(true);
+
+                            double previousX = circle.getLayoutX();
+                            final KeyValue kv = new KeyValue(circle.layoutXProperty(), 300, Interpolator.LINEAR);
+                            final KeyFrame kf = new KeyFrame(Duration.millis(500), kv);
+
+                            final KeyValue kv2 = new KeyValue(circle.layoutXProperty(), previousX, Interpolator.LINEAR);
+                            final KeyFrame kf2 = new KeyFrame(Duration.millis(600), kv2);
+                            timeline.getKeyFrames().add(kf);
+                            timeline.getKeyFrames().add(kf2);
+                            timeline.play();
+                            timeline.setOnFinished(event -> timeline.playFromStart());*/
                         }
                     }
 
@@ -351,17 +409,22 @@ public class Main extends Application {
                         break;
                     }
 
+                    if (!discovered) {
+                        // stopped
+                        break;
+                    }
+
                 }
             } catch (EOFException eofException) {
                 // socket closed on server side
-            //    eofException.printStackTrace();
+                //    eofException.printStackTrace();
                 stopBluetooth();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        public void cancel() {
+        private void cancel() {
             if (mConnection != null) {
                 try {
                     mConnection.close();
@@ -447,6 +510,6 @@ public class Main extends Application {
 
         discovered = false;
 
-        circle.setVisible(false);
+        Platform.runLater(() -> circle.setVisible(false));
     }
 }

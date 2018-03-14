@@ -1,0 +1,27 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="Accelerometer">
+    <output-path>$PROJECT_DIR$/out/artifacts/Accelerometer</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="sample.Main" />
+        <option name="description" value="" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="title" value="" />
+        <option name="vendor" value="" />
+        <option name="version" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="Accelerometer.jar">
+        <element id="module-output" name="Accelerometer" />
+      </element>
+      <element id="file-copy" path="$PROJECT_DIR$/src/bluecove-2.1.1-SNAPSHOT.jar" />
+      <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.8.2" />
+      <element id="library" level="project" name="Maven: com.squareup.okhttp3:logging-interceptor:3.8.1" />
+      <element id="library" level="project" name="Maven: com.squareup.okhttp3:okhttp:3.8.0" />
+      <element id="library" level="project" name="Maven: com.squareup.okio:okio:1.13.0" />
+      <element id="library" level="project" name="Maven: com.squareup.retrofit2:converter-gson:2.3.0" />
+      <element id="library" level="project" name="Maven: com.squareup.retrofit2:retrofit:2.3.0" />
+    </root>
+  </artifact>
+</component>
