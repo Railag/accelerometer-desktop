@@ -1,6 +1,8 @@
 package sample;
 
 import com.google.gson.Gson;
+import com.intel.bluetooth.BlueCoveConfigProperties;
+import com.intel.bluetooth.BlueCoveImpl;
 import com.intel.bluetooth.RemoteDeviceHelper;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -35,15 +37,18 @@ import java.util.stream.Collectors;
 
 public class Main extends Application {
 
+    private final static String SEPARATOR = "\r\n";
+
     private static Retrofit api;
     private static RConnectorService rConnectorService;
 
-    private final static int PACKAGE_SIZE = 5;
+    private final static int PACKAGE_SIZE = 4; // 10 x and 10 y
 
     private static int width = 1920; // default width
     private static int height = 1080; // default height
 
-    private final static double THRESHOLD_ACCELEROMETER_MAX = 7.0;
+    //private final static double THRESHOLD_ACCELEROMETER_MAX = 10.0; REAL
+    private final static double THRESHOLD_ACCELEROMETER_MAX = 5.0;
 
     private long userId = -1;
 
@@ -139,6 +144,8 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, width, height));
         primaryStage.show();
 
+        bluetoothInit();
+
         login();
     }
 
@@ -164,6 +171,7 @@ public class Main extends Application {
                     UserResult result = response.body();
                     if (result != null) {
                         userId = result.id;
+                        // TODO fix flow
                     }
                 }
             }
@@ -260,9 +268,10 @@ public class Main extends Application {
                     UUID[] uuidSet = new UUID[1];
                     uuidSet[0] = new UUID(0x0100);
                     UUID[] uuids = new UUID[1];
-                    uuids[0] = new UUID("0cbb85aa795141a6b891b2ee53960860", false);
+                    // TODO replace for Arduino board UUID        uuids[0] = new UUID("0cbb85aa795141a6b891b2ee53960860", false);
                     // TODO fix transaction ids, multiple javax.bluetooth.BluetoothStateException: Already running 7 service discovery transactions
-                    transactionSearchId = agent.searchServices(null, uuids, device, discoveryListener);
+                    //        transactionSearchId = agent.searchServices(null, uuids, device, discoveryListener);
+                    transactionSearchId = agent.searchServices(null, uuidSet, device, discoveryListener);
                 }
             }
         } catch (Exception e) {
@@ -360,33 +369,99 @@ public class Main extends Application {
             mConnection = connection;
         }
 
+
+        int counter2 = 0;
+
         @Override
         public void run() {
             try {
                 // prepare to receive data
                 System.out.println("waiting for input");
 
+                byte[] buffer = new byte[1024];
+                int bytes;
+
+                boolean halfDataEnd = false;
+                boolean halfDataStart = false;
+                String halfDouble = "";
+
                 DataInputStream dataInputStream = mConnection.openDataInputStream();
                 while (true) {
 
-                    double value = dataInputStream.readDouble();
-                    //        System.out.println("Received: " + value);
+                    bytes = dataInputStream.read(buffer);
 
-                    if (isX) {
-                        x.add(value);
-                    } else {
-                        y.add(value);
-                    }
+                    // construct a string from the valid bytes in the buffer
+                    String readMessage = new String(buffer, 0, bytes);
+                    System.out.println(readMessage);
 
-                    counter++;
-                    if (counter >= PACKAGE_SIZE) {
-                        isX = !isX;
-                        counter = 0;
-                        if (isX) { // when we have x + y arrays
-                            xCurrent = new ArrayList<>(x.subList(x.size() - PACKAGE_SIZE, x.size()));
-                            yCurrent = new ArrayList<>(y.subList(y.size() - PACKAGE_SIZE, y.size()));
-                            System.out.println("moveCircle");
-                            Platform.runLater(Main.this::moveCircle);
+                    counter2++;
+                    System.out.println("Read calls: " + counter2);
+
+                    if (readMessage.length() > 0) {
+                        try {
+                            for (int i = 0; i <= readMessage.length(); ) {
+                                int doubleEndIndex = readMessage.indexOf(SEPARATOR, i);
+                                if (doubleEndIndex == -1) {
+                                    int doublePartLength = readMessage.length() - i;
+                                    if (doublePartLength <= 0) {
+                                        break; // end of line
+                                    } else { // 1 char left, halfDataEnd stuff
+                                        String substring = readMessage.substring(i, readMessage.length());
+                                        halfDataEnd = true;
+                                        halfDouble = substring;
+                                        break;
+                                    }
+                                }
+
+                                String substring = readMessage.substring(i, doubleEndIndex);
+                                if (substring.length() == 0) { // "\r\n 0.47 ...", delimiter comes first -> ignore it
+                                    i = doubleEndIndex + SEPARATOR.length();
+                                    continue;
+                                }
+                                if (halfDataEnd) {
+                                    halfDataEnd = false;
+                                    if (!substring.contains(".")) { // e.g. when first number comes as ".40" and then full number "5.30" comes, ignore first occurence
+                                        substring = halfDouble + substring; // usually just combine "temp" + "new number part"
+                                    }
+                                    halfDouble = "";
+                                } else if (halfDataStart) {
+                                    halfDataStart = false;
+                                    substring = substring + halfDouble;
+                                    halfDouble = "";
+                                } else if (substring.length() == 3 || (substring.startsWith("-") && substring.length() == 4)) { // one char lost at the end, e.g. "0.3" and then goes "1" instead of "0.31"
+                                    halfDataStart = true;                                                                         // additional case with "-" with format like "-0.3" and "1"
+                                    halfDouble = substring;
+                                    i = doubleEndIndex + SEPARATOR.length();
+                                    continue;
+                                } else if (substring.length() == 1) { // one char to be attached, e.g. "-" from "-0.39" or "0" from "0.25" and then will be followed with the second half of the data
+                                    halfDataEnd = true;
+                                    halfDouble = substring;
+                                    i = doubleEndIndex + SEPARATOR.length();
+                                    continue;
+                                }
+
+                                double value = Double.parseDouble(substring);
+
+                                if (isX) {
+                                    x.add(value);
+                                } else {
+                                    y.add(value);
+                                }
+
+                                isX = !isX;
+
+                                i = doubleEndIndex + SEPARATOR.length();
+
+                                counter++;
+
+                                if (counter >= PACKAGE_SIZE) {
+                                    counter = 0;
+                                    xCurrent = new ArrayList<>(x.subList(x.size() - PACKAGE_SIZE / 2, x.size()));
+                                    yCurrent = new ArrayList<>(y.subList(y.size() - PACKAGE_SIZE / 2, y.size()));
+                                    System.out.println("moveCircle");
+
+                                    Platform.runLater(() -> moveCircle(new ArrayList<>(xCurrent), new ArrayList<>(yCurrent)));
+
 /*                            javafx.animation.Timeline timeline = new Timeline();
                             timeline.setCycleCount(Timeline.INDEFINITE);
                             timeline.setAutoReverse(true);
@@ -401,15 +476,24 @@ public class Main extends Application {
                             timeline.getKeyFrames().add(kf2);
                             timeline.play();
                             timeline.setOnFinished(event -> timeline.playFromStart());*/
+
+                                }
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Stopped10");
+                            e.printStackTrace();
                         }
                     }
+                    //    double value = dataInputStream.readDouble();
+                    //        System.out.println("Received: " + value);
 
-                    if (value == EXIT_CMD) {
+       /*             if (value == EXIT_CMD) {
                         System.out.println("finish process");
                         break;
                     }
-
+*/
                     if (!discovered) {
+                        System.out.println("Stopped");
                         // stopped
                         break;
                     }
@@ -418,13 +502,17 @@ public class Main extends Application {
             } catch (EOFException eofException) {
                 // socket closed on server side
                 //    eofException.printStackTrace();
+                System.out.println("Bluetooth stopped EOF exception");
                 stopBluetooth();
             } catch (Exception e) {
                 e.printStackTrace();
+                System.out.println("Stopped3");
             }
         }
 
         private void cancel() {
+            System.out.println("Stopped4");
+
             if (mConnection != null) {
                 try {
                     mConnection.close();
@@ -433,12 +521,27 @@ public class Main extends Application {
                 }
             }
         }
+
     }
 
-    private void moveCircle() {
-        for (int i = 0; i < xCurrent.size() && i < yCurrent.size(); i++) {
-            double x = adjust(xCurrent.get(xCurrent.size() - 1), width, true);
-            double y = adjust(yCurrent.get(yCurrent.size() - 1), height, false);
+    private void moveCircle(ArrayList<Double> xArray, ArrayList<Double> yArray) {
+        for (int i = 0; i < xArray.size() && i < yArray.size(); i++) {
+            double x = adjust(xArray.get(xArray.size() - 1), width, true);
+            double y = adjust(yArray.get(yArray.size() - 1), height, false);
+
+            // borders X
+            if (x > width) {
+                x = width - 30;
+            } else if (x < 0) {
+                x = 30;
+            }
+
+            // borders Y
+            if (y > height) {
+                y = height - 30;
+            } else if (y < 0) {
+                y = 30;
+            }
 
             circle.setLayoutX(x);
             circle.setLayoutY(y);
@@ -447,6 +550,8 @@ public class Main extends Application {
     }
 
     private void bluetoothInit() {
+        BlueCoveImpl.setConfigProperty(BlueCoveConfigProperties.PROPERTY_DEBUG_STDOUT, "true");
+
         startLoading();
 
         waitThread = new WaitThread();
@@ -500,6 +605,8 @@ public class Main extends Application {
     }
 
     private void stopBluetooth() {
+        System.out.println("Stopped5");
+
         if (waitThread != null) {
             waitThread.cancel();
         }
