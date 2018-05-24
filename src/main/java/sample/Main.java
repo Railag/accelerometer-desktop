@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -49,6 +50,8 @@ public class Main extends Application {
 
     private long latestEventId = -1;
 
+    private Group content;
+
     private ArrayList<RemoteDevice> remoteDevices = new ArrayList<>();
     private ArrayList<ServiceRecord> serviceRecords = new ArrayList<>();
 
@@ -75,21 +78,21 @@ public class Main extends Application {
 
     private String deviceName = "";
 
-    @Override
-    public void start(Stage primaryStage) {
-        this.primaryStage = primaryStage;
+    private void replaceScene(Scene scene) {
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
 
-        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+    public void openCustomerPanel() throws IOException{
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("fxml/login.fxml"));
+        content = loader.load();
+        Scene scene = new Scene(content);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
 
-        width = (int) primaryScreenBounds.getWidth();
-        height = (int) primaryScreenBounds.getHeight();
-
-        //set Stage boundaries to visible bounds of the main screen
-        primaryStage.setX(primaryScreenBounds.getMinX());
-        primaryStage.setY(primaryScreenBounds.getMinY());
-        primaryStage.setWidth(width);
-        primaryStage.setHeight(height);
-
+    private Scene getBluetoothScene() {
         // init circle
         circle = new Circle();
         circle.setCenterX(0.0f);
@@ -106,7 +109,7 @@ public class Main extends Application {
         progress.setLayoutY(height / 2);
         progress.setVisible(false);
 
-        list = new ListView<String>();
+        list = new ListView<>();
         list.setLayoutX(200);
         list.setLayoutY(300);
         list.setVisible(false);
@@ -135,9 +138,26 @@ public class Main extends Application {
         listButton.setVisible(false);
 
         Group root = new Group(circle, progress, bluetoothButton, list, listButton);
+        Scene scene = new Scene(root, width, height);
+        return scene;
+    }
 
-        primaryStage.setScene(new Scene(root, width, height));
-        primaryStage.show();
+    @Override
+    public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+
+        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+
+        width = (int) primaryScreenBounds.getWidth();
+        height = (int) primaryScreenBounds.getHeight();
+
+        //set Stage boundaries to visible bounds of the main screen
+        primaryStage.setX(primaryScreenBounds.getMinX());
+        primaryStage.setY(primaryScreenBounds.getMinY());
+        primaryStage.setWidth(width);
+        primaryStage.setHeight(height);
+
+        replaceScene(getBluetoothScene());
 
         login();
     }
@@ -493,7 +513,6 @@ public class Main extends Application {
     private static <T> T createRetrofitService(final Class<T> clazz) {
         return api().create(clazz);
     }
-
 
     public static void main(String[] args) {
         launch(args);
