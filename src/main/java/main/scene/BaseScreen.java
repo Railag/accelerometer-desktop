@@ -1,15 +1,19 @@
 package main.scene;
 
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.image.Image;
 import main.Main;
 import main.RConnectorService;
 
 import java.io.IOException;
 
 public class BaseScreen {
+
+    private ProgressIndicator progressIndicator;
 
     protected Main main;
 
@@ -32,7 +36,15 @@ public class BaseScreen {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        scene = new Scene(content);
+
+        progressIndicator = new ProgressIndicator();
+        progressIndicator.setPrefSize(100, 100);
+        progressIndicator.setLayoutX(main.getWidth() / 2);
+        progressIndicator.setLayoutY(main.getHeight() / 2);
+        progressIndicator.setVisible(false);
+
+        Group group = new Group(content, progressIndicator);
+        scene = new Scene(group);
     }
 
     public Scene getScene() {
@@ -40,14 +52,25 @@ public class BaseScreen {
     }
 
     protected void toast(String message) {
-        Platform.runLater(() -> {
-            if (main != null) {
-                main.toast(message);
-            }
-        });
+        if (main != null) {
+            main.toast(message);
+        }
     }
 
     protected RConnectorService restService() {
         return main.restService();
+    }
+
+    protected void startLoading() {
+        progressIndicator.setVisible(true);
+    }
+
+    protected void stopLoading() {
+        progressIndicator.setVisible(false);
+    }
+
+    protected Image loadImage(String path) {
+        //Image image = new Image("/drawIcon.png");
+        return new Image("/" + path);
     }
 }

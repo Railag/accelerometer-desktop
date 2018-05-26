@@ -1,20 +1,14 @@
 package main.scene;
 
-import com.intel.bluetooth.RemoteDeviceHelper;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.shape.Circle;
 import main.Main;
 
 import javax.bluetooth.*;
-import javax.microedition.io.Connector;
-import javax.microedition.io.StreamConnection;
-import java.io.DataInputStream;
-import java.io.EOFException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +19,6 @@ public class BluetoothScreen extends BaseScreen {
     private Button connectButton;
     private Button discoverButton;
     private Circle circle;
-    private ProgressIndicator progressIndicator;
     private ListView<String> list;
 
     private ArrayList<RemoteDevice> remoteDevices = new ArrayList<>();
@@ -34,7 +27,6 @@ public class BluetoothScreen extends BaseScreen {
     private DiscoveryAgent agent;
 
     private WaitThread waitThread;
-    private ProcessConnectionThread processConnectionThread;
 
     private String deviceName = "";
 
@@ -49,14 +41,14 @@ public class BluetoothScreen extends BaseScreen {
         connectButton = (Button) scene.lookup("#connectButton");
         discoverButton = (Button) scene.lookup("#discoverButton");
         circle = (Circle) scene.lookup("#circlee");
-        progressIndicator = (ProgressIndicator) scene.lookup("#progress");
-        list = (ListView) scene.lookup("#list");
+        list = (ListView<String>) scene.lookup("#list");
 
-        progressIndicator.setVisible(false);
         list.setVisible(false);
+        connectButton.setVisible(false);
 
 
         discoverButton.setOnAction(event -> {
+            startLoading();
             if (discovered) {
                 stopBluetooth();
             }
@@ -81,23 +73,17 @@ public class BluetoothScreen extends BaseScreen {
             String url = record.getConnectionURL(ServiceRecord.NOAUTHENTICATE_NOENCRYPT, false);
             System.out.println(url);
             if (url.contains("btspp")) {
-                try {
-                    StreamConnection connection = (StreamConnection) Connector.open(url, Connector.READ);
+                if (main != null) {
+                    Platform.runLater(() -> {
+                        main.initBluetooth(url, record);
+                        main.toTests();
+                    });
 
-                    RemoteDeviceHelper.authenticate(record.getHostDevice());
-
-            //        Platform.runLater(this::stopLoading);
-                    processConnectionThread = new ProcessConnectionThread(connection);
-                    processConnectionThread.start();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
         }
 
     }
-
 
     class WaitThread extends Thread {
 
@@ -155,92 +141,6 @@ public class BluetoothScreen extends BaseScreen {
         }
     }
 
-    class ProcessConnectionThread extends Thread {
-
-        private StreamConnection mConnection;
-
-        // Constant that indicate command from devices
-        private static final int EXIT_CMD = -1000;
-
-        public ProcessConnectionThread(StreamConnection connection) {
-            mConnection = connection;
-        }
-
-        @Override
-        public void run() {
-            try {
-                // prepare to receive data
-                System.out.println("waiting for input");
-
-                DataInputStream dataInputStream = mConnection.openDataInputStream();
-                while (true) {
-
-                    double value = dataInputStream.readDouble();
-                    //        System.out.println("Received: " + value);
-
-                  /*  if (isX) {
-                        x.add(value);
-                    } else {
-                        y.add(value);
-                    }
-
-                    counter++;
-                    if (counter >= PACKAGE_SIZE) {
-                        isX = !isX;
-                        counter = 0;
-                        if (isX) { // when we have x + y arrays
-                            xCurrent = new ArrayList<>(x.subList(x.size() - PACKAGE_SIZE, x.size()));
-                            yCurrent = new ArrayList<>(y.subList(y.size() - PACKAGE_SIZE, y.size()));
-                            System.out.println("moveCircle");
-                            Platform.runLater(Main.this::moveCircle);
-*//*                            javafx.animation.Timeline timeline = new Timeline();
-                            timeline.setCycleCount(Timeline.INDEFINITE);
-                            timeline.setAutoReverse(true);
-
-                            double previousX = circle.getLayoutX();
-                            final KeyValue kv = new KeyValue(circle.layoutXProperty(), 300, Interpolator.LINEAR);
-                            final KeyFrame kf = new KeyFrame(Duration.millis(500), kv);
-
-                            final KeyValue kv2 = new KeyValue(circle.layoutXProperty(), previousX, Interpolator.LINEAR);
-                            final KeyFrame kf2 = new KeyFrame(Duration.millis(600), kv2);
-                            timeline.getKeyFrames().add(kf);
-                            timeline.getKeyFrames().add(kf2);
-                            timeline.play();
-                            timeline.setOnFinished(event -> timeline.playFromStart());*//*
-                        }
-                    }
-*/
-                    if (value == EXIT_CMD) {
-                        System.out.println("finish process");
-                        break;
-                    }
-
-                    if (!discovered) {
-                        // stopped
-                        break;
-                    }
-
-                }
-            } catch (EOFException eofException) {
-                // socket closed on server side
-                //    eofException.printStackTrace();
-                stopBluetooth();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        private void cancel() {
-            if (mConnection != null) {
-                try {
-                    mConnection.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
     public static final Object lock = new Object();
     private boolean discovered;
     private DiscoveryListener discoveryListener = new DiscoveryListener() {
@@ -266,9 +166,12 @@ public class BluetoothScreen extends BaseScreen {
                     }
                 }).collect(Collectors.toList()));
 
+                connectButton.setVisible(true);
                 list.setVisible(true);
                 list.setItems(items);
             });
+
+            stopLoading();
 
             System.out.println("device found: " + name);
         }
@@ -339,10 +242,6 @@ public class BluetoothScreen extends BaseScreen {
     private void stopBluetooth() {
         if (waitThread != null) {
             waitThread.cancel();
-        }
-
-        if (processConnectionThread != null) {
-            processConnectionThread.cancel();
         }
 
         discovered = false;

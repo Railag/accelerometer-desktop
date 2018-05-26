@@ -5,6 +5,8 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
+import java.util.ArrayList;
+
 public interface RConnectorService {
     //String API_ENDPOINT = "http://127.0.0.1:3000";
     //String API_ENDPOINT = "http://10.0.2.2:3000";
@@ -26,6 +28,11 @@ public interface RConnectorService {
     @FormUrlEncoded
     @POST("/user")
     Call<UserResult> createAccount(@Field("login") String login, @Field("password") String password, @Field("email") String email, @Field("age") int age, @Field("time") int time);
+
+    @FormUrlEncoded
+    @POST("/user/results_focusing")
+    Call<Result> sendFocusingResults(@Field("user_id") long userId, @Field("times[]") ArrayList<Double> times, @Field("error_values[]") ArrayList<Long> errors);
+
 
    /* @FormUrlEncoded
     @POST("/user/fcm_token")

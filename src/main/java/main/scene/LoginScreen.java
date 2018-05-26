@@ -25,7 +25,7 @@ public class LoginScreen extends BaseScreen {
     @Override
     protected void initViews() {
         loginButton = (Button) scene.lookup("#loginButton");
-        loginField = (TextField) scene.lookup("#loginField");
+        loginField = (TextField) scene.lookup("#login");
         passwordField = (PasswordField) scene.lookup("#password");
         createAccountButton = (Button) scene.lookup("#createAccountButton");
 
