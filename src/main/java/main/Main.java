@@ -190,7 +190,7 @@ public class Main extends Application {
     }
 
     public void toDistributionTest() {
-        // TODO
+        setScreen(new DistributionTestScreen(this));
     }
 
     public void toStabilityTest() {

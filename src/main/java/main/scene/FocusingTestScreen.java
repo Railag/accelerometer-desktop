@@ -92,6 +92,7 @@ public class FocusingTestScreen extends BaseScreen implements BluetoothEventList
         LINES_COUNT *= diff.getLevel();
 
         baseCircle = Circle.random();
+        baseCircleView.setImage(loadImage("image/circle.png"));
         baseCircleView.setRotate(Circle.rotation(baseCircle));
 
         for (int i = 0; i < LINES_VISIBLE; i++) {
@@ -212,8 +213,8 @@ public class FocusingTestScreen extends BaseScreen implements BluetoothEventList
         sendResults(times, errors);
     }
 
-    private void sendResults(ArrayList<Double> login, ArrayList<Long> password) {
-        Call<Result> call = restService().sendFocusingResults(User.get().getId(), login, password);
+    private void sendResults(ArrayList<Double> times, ArrayList<Long> errors) {
+        Call<Result> call = restService().sendFocusingResults(User.get().getId(), times, errors);
         call.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
