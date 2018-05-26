@@ -1,4 +1,4 @@
-package sample;
+package main;
 
 import com.google.gson.Gson;
 import com.intel.bluetooth.RemoteDeviceHelper;
@@ -16,6 +16,9 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import main.scene.BaseScreen;
+import main.scene.LoginScreen;
+import main.scene.RegisterScreen;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -45,10 +48,6 @@ public class Main extends Application {
     private static int height = 1080; // default height
 
     private final static double THRESHOLD_ACCELEROMETER_MAX = 7.0;
-
-    private long userId = -1;
-
-    private long latestEventId = -1;
 
     private Group content;
 
@@ -83,7 +82,11 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    public void openCustomerPanel() throws IOException{
+    private void setScreen(BaseScreen screen) {
+        replaceScene(screen.getScene());
+    }
+
+    public void openCustomerPanel() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("fxml/login.fxml"));
         content = loader.load();
@@ -142,6 +145,10 @@ public class Main extends Application {
         return scene;
     }
 
+    public void toast(String text) {
+        Toast.makeText(primaryStage, text, 1000, 500, 750);
+    }
+
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -159,7 +166,20 @@ public class Main extends Application {
 
         replaceScene(getBluetoothScene());
 
-        login();
+        initBluetooth();
+
+        User user = User.get();
+        String token = user.getToken();
+
+        if (!TextUtils.isEmpty(token))
+            login(user.getLogin(), token);
+        else {
+            toLogin();
+        }
+    }
+
+    private void initBluetooth() {
+        // TODO
     }
 
     private void startLoading() {
@@ -174,23 +194,28 @@ public class Main extends Application {
         bluetoothButton.setVisible(true);
     }
 
-    private void login() {
-        RConnectorService restService = restService();
-        Call<UserResult> call = restService.login("test@gmail.com", "test");
+    private void login(String login, String token) {
+        Call<UserResult> call = restService().login(login, token);
         call.enqueue(new Callback<UserResult>() {
             @Override
             public void onResponse(Call<UserResult> call, Response<UserResult> response) {
                 if (response != null) {
                     UserResult result = response.body();
                     if (result != null) {
-                        userId = result.id;
+                        if (result.invalid()) {
+                            toast(result.error);
+                            return;
+                        }
+                        User.save(result);
+                        toBluetooth();
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<UserResult> call, Throwable throwable) {
-
+                throwable.printStackTrace();
+                toast(throwable.getMessage());
             }
         });
     }
@@ -310,6 +335,18 @@ public class Main extends Application {
             }
         }
 
+    }
+
+    public void toLogin() {
+        setScreen(new LoginScreen(this));
+    }
+
+    public void toBluetooth() {
+        // TODO
+    }
+
+    public void toRegister() {
+        setScreen(new RegisterScreen(this));
     }
 
     class WaitThread extends Thread {
@@ -480,7 +517,7 @@ public class Main extends Application {
         return inverse ? (float) Math.abs(maxValue - value) : (float) value;
     }
 
-    private static Retrofit api() {
+    private Retrofit api() {
         if (api == null) {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -503,14 +540,14 @@ public class Main extends Application {
         return api;
     }
 
-    public static RConnectorService restService() {
+    public RConnectorService restService() {
         if (rConnectorService == null)
             rConnectorService = createRetrofitService(RConnectorService.class);
 
         return rConnectorService;
     }
 
-    private static <T> T createRetrofitService(final Class<T> clazz) {
+    private <T> T createRetrofitService(final Class<T> clazz) {
         return api().create(clazz);
     }
 
