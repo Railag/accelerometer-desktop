@@ -173,7 +173,8 @@ public class Main extends Application {
     }
 
     public void toBluetooth() {
-        setScreen(new BluetoothScreen(this));
+    //    setScreen(new BluetoothScreen(this));
+        toTests();
     }
 
     public void toRegister() {
@@ -185,7 +186,7 @@ public class Main extends Application {
     }
 
     public void toFocusingTest() {
-        // TODO
+        setScreen(new FocusingTestScreen(this));
     }
 
     public void toDistributionTest() {

@@ -1,10 +1,14 @@
 package main.scene;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.TilePane;
+import javafx.scene.paint.Color;
 import main.*;
 import main.model.Answer;
 import main.model.Circle;
@@ -19,7 +23,7 @@ import java.util.List;
 public class FocusingTestScreen extends BaseScreen implements BluetoothEventListener {
 
     private ImageView baseCircleView;
-    private GridPane circlesGrid;
+    private TilePane circlesGrid;
     private Button button1, button2, button3, button4, button5, button6, button7, button8, button9, button10;
     private Button[] buttonViews;
 
@@ -36,8 +40,6 @@ public class FocusingTestScreen extends BaseScreen implements BluetoothEventList
 
     private boolean locked = false;
 
-    CirclesAdapter adapter;
-
     private int currentLine = 0;
 
     private int previousSelection;
@@ -45,9 +47,9 @@ public class FocusingTestScreen extends BaseScreen implements BluetoothEventList
 
     private long time;
 
-    private ArrayList<Circle> circles = new ArrayList<>();
+    private ArrayList<Circle> circles;
 
-    private ArrayList<Answer> answers = new ArrayList<>();
+    private ArrayList<Answer> answers;
 
     private Circle baseCircle;
 
@@ -61,7 +63,7 @@ public class FocusingTestScreen extends BaseScreen implements BluetoothEventList
         main.registerBluetoothListener(this);
 
         baseCircleView = (ImageView) scene.lookup("#baseCircle");
-        circlesGrid = (GridPane) scene.lookup("#circlesGrid");
+        circlesGrid = (TilePane) scene.lookup("#circlesGrid");
         button1 = (Button) scene.lookup("#button1");
         button2 = (Button) scene.lookup("#button2");
         button3 = (Button) scene.lookup("#button3");
@@ -83,6 +85,9 @@ public class FocusingTestScreen extends BaseScreen implements BluetoothEventList
             });
         }
 
+        circles = new ArrayList<>();
+        answers = new ArrayList<>();
+
         Difficulty diff = main.difficulty();
         LINES_COUNT *= diff.getLevel();
 
@@ -103,19 +108,34 @@ public class FocusingTestScreen extends BaseScreen implements BluetoothEventList
             }
         }
 
-      /*  adapter = new CirclesAdapter();
-        adapter.setCircles(circles);
+        setCircles();
 
-        GridLayoutManager manager = new GridLayoutManager(getActivity(), CIRCLES_PER_LINE);
-        circlesGrid.setLayoutManager(manager);
-
-        circlesGrid.setAdapter(adapter);
-*/
         time = System.nanoTime();
+    }
 
-/*        createAccountButton.setOnAction(event -> {
-            main.toRegister();
-        });*/
+    private void setCircles() {
+        circlesGrid.getChildren().clear();
+
+        for (Circle circle : circles) {
+            ImageView circleImage = new ImageView(loadImage("image/circle.png"));
+            switch (circle) {
+
+                case TOP_RIGHT:
+                    circleImage.setRotate(180);
+                    break;
+                case TOP_LEFT:
+                    circleImage.setRotate(90);
+                    break;
+                case DOWN_RIGHT:
+                    circleImage.setRotate(270);
+                    break;
+                case DOWN_LEFT:
+                default:
+                    break;
+            }
+
+            circlesGrid.getChildren().add(circleImage);
+        }
     }
 
     private void replaceCircleLine() {
@@ -128,7 +148,8 @@ public class FocusingTestScreen extends BaseScreen implements BluetoothEventList
         }
 
         circles = newCircles;
-        adapter.setCircles(circles);
+
+        setCircles();
 
         baseCircle = Circle.random();
         baseCircleView.setRotate(Circle.rotation(baseCircle));
@@ -205,7 +226,7 @@ public class FocusingTestScreen extends BaseScreen implements BluetoothEventList
                         }
 
                         stopLoading();
-                        main.toTests();
+                        Platform.runLater(() -> main.toTests());
                     }
                 }
             }
@@ -229,11 +250,15 @@ public class FocusingTestScreen extends BaseScreen implements BluetoothEventList
     }
 
     private void refreshSelection() {
-        buttonViews[previousSelection].setBackground(android.R.color.darker_gray);
+        Colors.setBackgroundColor(buttonViews[previousSelection], Colors.COLOR_DARKER_GRAY);
 
         previousSelection = currentButtonSelection;
 
-        buttonViews[currentButtonSelection].setBackgroundResource(R.drawable.outline);
+        BackgroundFill myBF = new BackgroundFill(Color.BLUEVIOLET, new CornerRadii(1),
+                new Insets(0.0, 0.0, 0.0, 0.0));
+        buttonViews[currentButtonSelection].setBackground(new Background(myBF));
+
+        //   buttonViews[currentButtonSelection].setBackground(R.drawable.outline);
     }
 
     @Override
