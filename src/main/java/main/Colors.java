@@ -1,7 +1,7 @@
 package main;
 
 import javafx.scene.Node;
-import javafx.scene.control.Control;
+import javafx.scene.layout.Region;
 
 public class Colors {
     public final static String COLOR_PRIMARY = "#3F51B5";
@@ -16,7 +16,7 @@ public class Colors {
     public final static String COLOR_WHITE = "#FFFFFF";
     public final static String COLOR_DARKER_GRAY = "#aaa";
 
-    public static void setBackgroundColor(Control control, String color) {
-        control.setStyle("-fx-background: " + color + ";");
+    public static void setBackgroundColor(Node node, String color) {
+        node.setStyle("-fx-background-color: " + color + ";");
     }
 }

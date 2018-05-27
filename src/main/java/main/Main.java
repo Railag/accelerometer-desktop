@@ -2,6 +2,7 @@ package main;
 
 import com.google.gson.Gson;
 import com.intel.bluetooth.RemoteDeviceHelper;
+import com.sun.org.glassfish.external.arc.Stability;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
@@ -194,7 +195,7 @@ public class Main extends Application {
     }
 
     public void toStabilityTest() {
-        // TODO
+        setScreen(new StabilityTestScreen(this));
     }
 
     public void toVolumeTest() {

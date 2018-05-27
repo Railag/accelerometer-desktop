@@ -37,6 +37,10 @@ public interface RConnectorService {
     @POST("/user/results_volume")
     Call<Result> sendAttentionDistributionResults(@Field("user_id") long userId, @Field("wins") long wins, @Field("fails") long fails, @Field("misses") long misses);
 
+    @FormUrlEncoded
+    @POST("/user/results_stability")
+    Call<Result> sendAttentionStabilityResults(@Field("user_id") long userId, @Field("times[]") ArrayList<Double> times, @Field("misses") long misses, @Field("errors_value") long errors);
+
    /* @FormUrlEncoded
     @POST("/user/fcm_token")
     Call<Result> sendFCMToken(@Field("user_id") long userId, @Field("fcm_token") String fcmToken);
