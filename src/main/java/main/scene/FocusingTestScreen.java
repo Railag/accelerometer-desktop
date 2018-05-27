@@ -53,6 +53,8 @@ public class FocusingTestScreen extends BaseScreen implements BluetoothEventList
 
     private Circle baseCircle;
 
+    private BackgroundFill backgroundFillSelected;
+    private BackgroundFill backgroundFillUnselected;
 
     public FocusingTestScreen(Main main) {
         super(main, "focusing-test.fxml");
@@ -60,8 +62,6 @@ public class FocusingTestScreen extends BaseScreen implements BluetoothEventList
 
     @Override
     protected void initViews() {
-        main.registerBluetoothListener(this);
-
         baseCircleView = (ImageView) scene.lookup("#baseCircle");
         circlesGrid = (TilePane) scene.lookup("#circlesGrid");
         button1 = (Button) scene.lookup("#button1");
@@ -77,12 +77,24 @@ public class FocusingTestScreen extends BaseScreen implements BluetoothEventList
 
         buttonViews = new Button[]{button1, button2, button3, button4, button5, button6, button7, button8, button9, button10};
 
+        backgroundFillSelected = new BackgroundFill(Color.ANTIQUEWHITE, new CornerRadii(1),
+                new Insets(0.0, 0.0, 0.0, 0.0));
+
+        backgroundFillUnselected = new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(1),
+                new Insets(0.0, 0.0, 0.0, 0.0));
+
         for (int i = 0; i < buttonViews.length; i++) {
             final int index = i;
             Button button = buttonViews[index];
             button.setOnAction(event -> {
                 click(index);
             });
+            
+            if (i == 0) {
+                button.setBackground(new Background(backgroundFillSelected));
+            } else {
+                button.setBackground(new Background(backgroundFillUnselected));
+            }
         }
 
         circles = new ArrayList<>();
@@ -157,6 +169,7 @@ public class FocusingTestScreen extends BaseScreen implements BluetoothEventList
     }
 
     public void click(int count) {
+        lock = false;
 
         if (locked) {
             return;
@@ -242,47 +255,80 @@ public class FocusingTestScreen extends BaseScreen implements BluetoothEventList
         });
     }
 
+
+    private void refreshSelection() {
+        for (int i = 0; i < buttonViews.length; i++) {
+            Button button = buttonViews[i];
+            if (currentButtonSelection == i) {
+                button.setBackground(new Background(backgroundFillSelected));
+            } else {
+                button.setBackground(new Background(backgroundFillUnselected));
+            }
+        }
+
+        lock = false;
+    }
+
+    private boolean lock;
+
+
     @Override
     public void onLeft() {
+        if (lock) {
+            return;
+        }
+        lock = true;
+
         if (currentButtonSelection > 0) {
             currentButtonSelection--;
             refreshSelection();
+        } else {
+            lock = false;
         }
-    }
-
-    private void refreshSelection() {
-        Colors.setBackgroundColor(buttonViews[previousSelection], Colors.COLOR_DARKER_GRAY);
-
-        previousSelection = currentButtonSelection;
-
-        BackgroundFill myBF = new BackgroundFill(Color.BLUEVIOLET, new CornerRadii(1),
-                new Insets(0.0, 0.0, 0.0, 0.0));
-        buttonViews[currentButtonSelection].setBackground(new Background(myBF));
-
-        //   buttonViews[currentButtonSelection].setBackground(R.drawable.outline);
     }
 
     @Override
     public void onRight() {
+        if (lock) {
+            return;
+        }
+        lock = true;
+
         if (currentButtonSelection < BUTTONS_COUNT - 1) {
             currentButtonSelection++;
             refreshSelection();
+        } else {
+            lock = false;
         }
     }
 
     @Override
     public void onTop() {
+        if (lock) {
+            return;
+        }
+        lock = true;
+
         if (currentButtonSelection + BUTTONS_PER_LINE < BUTTONS_COUNT) {
             currentButtonSelection += BUTTONS_PER_LINE;
             refreshSelection();
+        } else {
+            lock = false;
         }
     }
 
     @Override
     public void onBottom() {
+        if (lock) {
+            return;
+        }
+        lock = true;
+
         if (currentButtonSelection >= BUTTONS_PER_LINE) {
             currentButtonSelection -= BUTTONS_PER_LINE;
             refreshSelection();
+        } else {
+            lock = false;
         }
     }
 
@@ -301,10 +347,20 @@ public class FocusingTestScreen extends BaseScreen implements BluetoothEventList
 
     @Override
     public void onBottomRight() {
+        if (lock) {
+            return;
+        }
+        lock = true;
+
         click(currentButtonSelection + 1); // 0-9 -> 1-10
     }
 
     @Override
     public void onCenter() {
+    }
+
+    @Override
+    public void bluetoothListener() {
+        main.registerBluetoothListener(this);
     }
 }

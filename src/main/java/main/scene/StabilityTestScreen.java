@@ -53,8 +53,6 @@ public class StabilityTestScreen extends BaseScreen implements BluetoothEventLis
 
     @Override
     protected void initViews() {
-        main.registerBluetoothListener(this);
-
         testBackground = (AnchorPane) scene.lookup("#testBackground");
         leftButton = (Button) scene.lookup("#leftButton");
         rightButton = (Button) scene.lookup("#rightButton");
@@ -269,5 +267,10 @@ public class StabilityTestScreen extends BaseScreen implements BluetoothEventLis
     @Override
     public void onCenter() {
         Colors.setBackgroundColor(testBackground, Colors.COLOR_DARKER_GRAY);
+    }
+
+    @Override
+    public void bluetoothListener() {
+        main.registerBluetoothListener(this);
     }
 }

@@ -76,4 +76,8 @@ public class BaseScreen {
         //Image image = new Image("/drawIcon.png");
         return new Image("/" + path);
     }
+
+    public void bluetoothListener() {
+        // implement if needed
+    }
 }

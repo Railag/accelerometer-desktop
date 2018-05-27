@@ -42,8 +42,6 @@ public class DistributionTestScreen extends BaseScreen implements BluetoothEvent
 
     @Override
     protected void initViews() {
-        main.registerBluetoothListener(this);
-
         button = (Button) scene.lookup("#button");
         firstImage = (ImageView) scene.lookup("#firstImage");
         secondImage = (ImageView) scene.lookup("#secondImage");
@@ -203,5 +201,10 @@ public class DistributionTestScreen extends BaseScreen implements BluetoothEvent
     @Override
     public void onCenter() {
 
+    }
+
+    @Override
+    public void bluetoothListener() {
+        main.registerBluetoothListener(this);
     }
 }

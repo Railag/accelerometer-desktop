@@ -7,17 +7,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/cssdialects.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/scene/RamVolumeTestScreen.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/css/application.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/model/Sign.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/model/Sign.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/scene/BaseScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/scene/BaseScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/scene/TestsScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/scene/TestsScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/scene/BluetoothScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/scene/BluetoothScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/scene/DistributionTestScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/scene/DistributionTestScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/scene/FocusingTestScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/scene/FocusingTestScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/scene/RamVolumeTestScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/scene/RamVolumeTestScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/scene/StabilityTestScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/scene/StabilityTestScreen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/scene/VolumeTestScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/scene/VolumeTestScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ram-volume-test.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ram-volume-test.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/tests.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/tests.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/bluetooth.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/bluetooth.fxml" afterDir="false" />
     </list>
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -79,42 +77,63 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/main/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="461">
-              <caret line="206" column="5" lean-forward="true" selection-start-line="206" selection-start-column="5" selection-end-line="206" selection-end-column="5" />
+            <state relative-caret-position="-170">
+              <caret line="353" column="74" lean-forward="true" selection-start-line="353" selection-start-column="74" selection-end-line="353" selection-end-column="74" />
               <folding>
+                <element signature="e#5402#5403#0" expanded="true" />
+                <element signature="e#5454#5455#0" expanded="true" />
                 <element signature="e#5952#5953#0" expanded="true" />
                 <element signature="e#6005#6006#0" expanded="true" />
                 <element signature="e#6040#6041#0" expanded="true" />
                 <element signature="e#6067#6068#0" expanded="true" />
+                <element signature="e#8500#8501#0" expanded="true" />
+                <element signature="e#8548#8549#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ram-volume-test.fxml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/ram-volume-test.fxml">
-          <provider editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="16" column="96" selection-start-line="16" selection-start-column="96" selection-end-line="16" selection-end-column="96" />
-            </state>
-          </provider>
-          <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
-        </entry>
-      </file>
-      <file leaf-file-name="DistributionTestScreen.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/DistributionTestScreen.java">
+      <file leaf-file-name="BluetoothScreen.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/BluetoothScreen.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="42">
-              <caret line="66" column="36" selection-start-line="66" selection-start-column="36" selection-end-line="66" selection-end-column="36" />
+            <state relative-caret-position="260">
+              <caret line="186" column="13" lean-forward="true" selection-start-line="186" selection-start-column="13" selection-end-line="186" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FocusingTestScreen.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/FocusingTestScreen.java">
+      <file leaf-file-name="distribution-test.fxml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/distribution-test.fxml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="7" selection-start-line="7" selection-end-line="11" selection-end-column="37" />
+            </state>
+          </provider>
+          <provider editor-type-id="JavaFX-Scene-Builder" />
+        </entry>
+      </file>
+      <file leaf-file-name="bluetooth.fxml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/bluetooth.fxml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="153">
-              <caret line="257" column="8" selection-start-line="257" selection-start-column="8" selection-end-line="259" selection-end-column="80" />
+              <caret line="9" selection-start-line="9" selection-end-line="9" />
+            </state>
+          </provider>
+          <provider editor-type-id="JavaFX-Scene-Builder" />
+        </entry>
+      </file>
+      <file leaf-file-name="FocusingTestScreen.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/FocusingTestScreen.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="442">
+              <caret line="91" column="12" selection-start-line="91" selection-start-column="12" selection-end-line="91" selection-end-column="12" />
+              <folding>
+                <element signature="e#9797#9798#0" expanded="true" />
+                <element signature="e#9849#9850#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -122,11 +141,11 @@
       <file leaf-file-name="VolumeTestScreen.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/VolumeTestScreen.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="263">
-              <caret line="358" lean-forward="true" selection-start-line="358" selection-end-line="358" />
+            <state relative-caret-position="416">
+              <caret line="369" column="13" selection-start-line="369" selection-start-column="13" selection-end-line="369" selection-end-column="13" />
               <folding>
-                <element signature="e#6350#6570#0" expanded="true" />
-                <element signature="e#6569#6570#0" expanded="true" />
+                <element signature="e#10490#10491#0" expanded="true" />
+                <element signature="e#10542#10543#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -135,57 +154,52 @@
       <file leaf-file-name="RamVolumeTestScreen.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/RamVolumeTestScreen.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="31" column="38" lean-forward="true" selection-start-line="31" selection-start-column="38" selection-end-line="31" selection-end-column="38" />
+            <state relative-caret-position="467">
+              <caret line="372" column="13" lean-forward="true" selection-start-line="372" selection-start-column="13" selection-end-line="372" selection-end-column="13" />
               <folding>
-                <element signature="e#1773#1774#0" expanded="true" />
-                <element signature="e#1830#1831#0" expanded="true" />
-                <element signature="e#6373#6593#0" expanded="true" />
-                <element signature="e#6592#6593#0" expanded="true" />
+                <element signature="e#10523#10524#0" expanded="true" />
+                <element signature="e#10575#10576#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestsScreen.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/TestsScreen.java">
+      <file leaf-file-name="StabilityTestScreen.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/StabilityTestScreen.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="714">
-              <caret line="44" column="11" lean-forward="true" selection-start-line="44" selection-start-column="11" selection-end-line="44" selection-end-column="11" />
+            <state relative-caret-position="501">
+              <caret line="272" column="11" selection-start-line="272" selection-start-column="11" selection-end-line="272" selection-end-column="11" />
+              <folding>
+                <element signature="e#8117#8118#0" expanded="true" />
+                <element signature="e#8169#8170#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DistributionTestScreen.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/DistributionTestScreen.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="518">
+              <caret line="208" column="5" lean-forward="true" selection-start-line="208" selection-start-column="5" selection-end-line="208" selection-end-column="5" />
+              <folding>
+                <element signature="e#4668#4669#0" expanded="true" />
+                <element signature="e#4720#4721#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BaseScreen.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/BaseScreen.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="416">
+              <caret line="79" column="11" selection-start-line="79" selection-start-column="11" selection-end-line="79" selection-end-column="11" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tests.fxml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/tests.fxml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" column="33" selection-start-line="10" selection-start-column="33" selection-end-line="10" selection-end-column="33" />
-            </state>
-          </provider>
-          <provider editor-type-id="JavaFX-Scene-Builder" />
-        </entry>
-      </file>
-      <file leaf-file-name="Sign.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/main/model/Sign.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="135" column="5" lean-forward="true" selection-start-line="135" selection-start-column="5" selection-end-line="135" selection-end-column="5" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="attention-volume-test.fxml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/attention-volume-test.fxml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="404">
-              <caret line="31" column="90" lean-forward="true" selection-start-line="31" selection-start-column="90" selection-end-line="31" selection-end-column="95" />
-            </state>
-          </provider>
-          <provider editor-type-id="JavaFX-Scene-Builder" />
         </entry>
       </file>
     </leaf>
@@ -202,8 +216,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>ProcessConnectionThread</find>
-      <find>WaitThread</find>
       <find>waitThread</find>
       <find>discover</find>
       <find>Thread</find>
@@ -232,6 +244,8 @@
       <find>main</find>
       <find>Screen</find>
       <find>toBluetooth</find>
+      <find>moveCircl</find>
+      <find>register</find>
     </findStrings>
   </component>
   <component name="FindManager">
@@ -270,32 +284,32 @@
         <option value="$PROJECT_DIR$/src/main/java/main/fxml/login.fxml" />
         <option value="$PROJECT_DIR$/src/main/java/main/scene/RegisterScreen.java" />
         <option value="$PROJECT_DIR$/src/main/java/main/scene/LoginScreen.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/bluetooth.fxml" />
-        <option value="$PROJECT_DIR$/src/main/java/main/scene/BluetoothScreen.java" />
         <option value="$PROJECT_DIR$/src/main/java/main/BluetoothEventListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/main/Log.java" />
         <option value="$PROJECT_DIR$/src/main/java/main/model/Answer.java" />
         <option value="$PROJECT_DIR$/src/main/java/main/model/Difficulty.java" />
         <option value="$PROJECT_DIR$/src/main/java/main/Utils.java" />
-        <option value="$PROJECT_DIR$/src/main/java/main/scene/FocusingTestScreen.java" />
         <option value="$PROJECT_DIR$/src/main/resources/focusing-test.fxml" />
         <option value="$PROJECT_DIR$/src/main/resources/distribution-test.fxml" />
         <option value="$PROJECT_DIR$/src/main/java/main/model/Figure.java" />
-        <option value="$PROJECT_DIR$/src/main/java/main/scene/DistributionTestScreen.java" />
         <option value="$PROJECT_DIR$/src/main/java/main/Colors.java" />
         <option value="$PROJECT_DIR$/src/main/resources/stability-test.fxml" />
-        <option value="$PROJECT_DIR$/src/main/java/main/scene/StabilityTestScreen.java" />
         <option value="$PROJECT_DIR$/src/main/java/main/RConnectorService.java" />
         <option value="$PROJECT_DIR$/src/main/resources/css/application.css" />
-        <option value="$PROJECT_DIR$/src/main/java/main/scene/BaseScreen.java" />
         <option value="$PROJECT_DIR$/src/main/resources/attention-volume-test.fxml" />
-        <option value="$PROJECT_DIR$/src/main/java/main/scene/VolumeTestScreen.java" />
-        <option value="$PROJECT_DIR$/src/main/java/main/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/main/model/Sign.java" />
-        <option value="$PROJECT_DIR$/src/main/java/main/scene/RamVolumeTestScreen.java" />
         <option value="$PROJECT_DIR$/src/main/java/main/scene/TestsScreen.java" />
         <option value="$PROJECT_DIR$/src/main/resources/tests.fxml" />
         <option value="$PROJECT_DIR$/src/main/resources/ram-volume-test.fxml" />
+        <option value="$PROJECT_DIR$/src/main/java/main/scene/BluetoothScreen.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/bluetooth.fxml" />
+        <option value="$PROJECT_DIR$/src/main/java/main/scene/BaseScreen.java" />
+        <option value="$PROJECT_DIR$/src/main/java/main/scene/DistributionTestScreen.java" />
+        <option value="$PROJECT_DIR$/src/main/java/main/scene/StabilityTestScreen.java" />
+        <option value="$PROJECT_DIR$/src/main/java/main/scene/RamVolumeTestScreen.java" />
+        <option value="$PROJECT_DIR$/src/main/java/main/scene/VolumeTestScreen.java" />
+        <option value="$PROJECT_DIR$/src/main/java/main/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/java/main/scene/FocusingTestScreen.java" />
       </list>
     </option>
   </component>
@@ -432,7 +446,7 @@
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="OverrideImplement.combined" value="false" />
-    <property name="SearchEverywhereHistoryKey" value="TestsScreen&#9;FILE&#9;file://C:/Users/Asus/Documents/accelerometer-desktop/src/main/java/main/scene/TestsScreen.java&#10;RConne&#9;FILE&#9;file://C:/Users/Asus/Documents/accelerometer-desktop/src/main/java/main/RConnectorService.java&#10;Main&#9;FILE&#9;file://C:/Users/Asus/IdeaProjects/Accelerometer/src/main/java/sample/Main.java" />
+    <property name="SearchEverywhereHistoryKey" value="Bluetooth&#9;FILE&#9;file://C:/Users/Asus/Documents/accelerometer-desktop/src/main/java/main/scene/BluetoothScreen.java&#10;Main&#9;FILE&#9;file://C:/Users/Asus/Documents/accelerometer-desktop/src/main/java/main/Main.java&#10;TestsScreen&#9;FILE&#9;file://C:/Users/Asus/Documents/accelerometer-desktop/src/main/java/main/scene/TestsScreen.java&#10;RConne&#9;FILE&#9;file://C:/Users/Asus/Documents/accelerometer-desktop/src/main/java/main/RConnectorService.java" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="dynamic.classpath" value="false" />
@@ -607,12 +621,12 @@
       <workItem from="1527275726129" duration="1451000" />
       <workItem from="1527286442142" duration="4348000" />
       <workItem from="1527335089612" duration="30974000" />
-      <workItem from="1527421545086" duration="3340000" />
+      <workItem from="1527421545086" duration="9678000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="102924000" />
+    <option name="totallyTimeSpent" value="109262000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -628,7 +642,7 @@
       <window_info anchor="right" id="Maven Projects" order="4" weight="0.3298969" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="16" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" visible="true" weight="0.32900432" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" visible="true" weight="0.33225107" />
       <window_info anchor="bottom" id="Terminal" order="15" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="3" />
@@ -668,25 +682,13 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/main/Main.java</url>
-          <line>302</line>
-          <properties />
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/main/scene/FocusingTestScreen.java</url>
-          <line>107</line>
+          <line>262</line>
           <properties />
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/main/scene/FocusingTestScreen.java</url>
-          <line>104</line>
-          <properties />
-          <option name="timeStamp" value="20" />
+          <option name="timeStamp" value="34" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="23" />
+      <option name="time" value="35" />
     </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
@@ -723,14 +725,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/bluetooth.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="52" lean-forward="true" selection-start-line="11" selection-start-column="52" selection-end-line="11" selection-end-column="52" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/main/Log.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -749,18 +743,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/BluetoothScreen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1112">
-          <caret line="85" column="5" selection-start-line="85" selection-start-column="5" selection-end-line="85" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#533#534#0" expanded="true" />
-            <element signature="e#574#575#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -863,14 +845,6 @@
       </provider>
       <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/distribution-test.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" selection-start-line="7" selection-end-line="11" selection-end-column="37" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/scene/layout/Pane.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="197">
@@ -931,25 +905,6 @@
       </provider>
       <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/StabilityTestScreen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="348">
-          <caret line="88" column="53" lean-forward="true" selection-start-line="88" selection-start-column="53" selection-end-line="88" selection-end-column="53" />
-          <folding>
-            <element signature="e#845#846#0" expanded="true" />
-            <element signature="e#898#899#0" expanded="true" />
-            <element signature="e#5674#5675#0" expanded="true" />
-            <element signature="e#5731#5732#0" expanded="true" />
-            <element signature="e#5775#5776#0" expanded="true" />
-            <element signature="e#5837#5838#0" expanded="true" />
-            <element signature="e#5874#5875#0" expanded="true" />
-            <element signature="e#5933#5934#0" expanded="true" />
-            <element signature="e#7737#7738#0" expanded="true" />
-            <element signature="e#7820#7821#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/main/model/Figure.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
@@ -985,75 +940,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/BaseScreen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="444">
-          <caret line="49" column="81" lean-forward="true" selection-start-line="49" selection-start-column="81" selection-end-line="49" selection-end-column="81" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1295#1296#0" expanded="true" />
-            <element signature="e#1323#1324#0" expanded="true" />
-            <element signature="e#1493#1494#0" expanded="true" />
-            <element signature="e#1534#1535#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/FocusingTestScreen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="257" column="8" selection-start-line="257" selection-start-column="8" selection-end-line="259" selection-end-column="80" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/DistributionTestScreen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="42">
-          <caret line="66" column="36" selection-start-line="66" selection-start-column="36" selection-end-line="66" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/main/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="461">
-          <caret line="206" column="5" lean-forward="true" selection-start-line="206" selection-start-column="5" selection-end-line="206" selection-end-column="5" />
-          <folding>
-            <element signature="e#5952#5953#0" expanded="true" />
-            <element signature="e#6005#6006#0" expanded="true" />
-            <element signature="e#6040#6041#0" expanded="true" />
-            <element signature="e#6067#6068#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/main/model/Sign.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="280">
           <caret line="135" column="5" lean-forward="true" selection-start-line="135" selection-start-column="5" selection-end-line="135" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/VolumeTestScreen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="263">
-          <caret line="358" lean-forward="true" selection-start-line="358" selection-end-line="358" />
-          <folding>
-            <element signature="e#6350#6570#0" expanded="true" />
-            <element signature="e#6569#6570#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/RamVolumeTestScreen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="31" column="38" lean-forward="true" selection-start-line="31" selection-start-column="38" selection-end-line="31" selection-end-column="38" />
-          <folding>
-            <element signature="e#1773#1774#0" expanded="true" />
-            <element signature="e#1830#1831#0" expanded="true" />
-            <element signature="e#6373#6593#0" expanded="true" />
-            <element signature="e#6592#6593#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1084,12 +974,120 @@
       <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/ram-volume-test.fxml">
-      <provider editor-type-id="text-editor">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
           <caret line="16" column="96" selection-start-line="16" selection-start-column="96" selection-end-line="16" selection-end-column="96" />
         </state>
       </provider>
-      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/BaseScreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="79" column="11" selection-start-line="79" selection-start-column="11" selection-end-line="79" selection-end-column="11" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/DistributionTestScreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="518">
+          <caret line="208" column="5" lean-forward="true" selection-start-line="208" selection-start-column="5" selection-end-line="208" selection-end-column="5" />
+          <folding>
+            <element signature="e#4668#4669#0" expanded="true" />
+            <element signature="e#4720#4721#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/StabilityTestScreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="501">
+          <caret line="272" column="11" selection-start-line="272" selection-start-column="11" selection-end-line="272" selection-end-column="11" />
+          <folding>
+            <element signature="e#8117#8118#0" expanded="true" />
+            <element signature="e#8169#8170#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/RamVolumeTestScreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="467">
+          <caret line="372" column="13" lean-forward="true" selection-start-line="372" selection-start-column="13" selection-end-line="372" selection-end-column="13" />
+          <folding>
+            <element signature="e#10523#10524#0" expanded="true" />
+            <element signature="e#10575#10576#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/VolumeTestScreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="369" column="13" selection-start-line="369" selection-start-column="13" selection-end-line="369" selection-end-column="13" />
+          <folding>
+            <element signature="e#10490#10491#0" expanded="true" />
+            <element signature="e#10542#10543#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/BluetoothScreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="186" column="13" lean-forward="true" selection-start-line="186" selection-start-column="13" selection-end-line="186" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/distribution-test.fxml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" selection-start-line="7" selection-end-line="11" selection-end-column="37" />
+        </state>
+      </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/bluetooth.fxml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/main/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-170">
+          <caret line="353" column="74" lean-forward="true" selection-start-line="353" selection-start-column="74" selection-end-line="353" selection-end-column="74" />
+          <folding>
+            <element signature="e#5402#5403#0" expanded="true" />
+            <element signature="e#5454#5455#0" expanded="true" />
+            <element signature="e#5952#5953#0" expanded="true" />
+            <element signature="e#6005#6006#0" expanded="true" />
+            <element signature="e#6040#6041#0" expanded="true" />
+            <element signature="e#6067#6068#0" expanded="true" />
+            <element signature="e#8500#8501#0" expanded="true" />
+            <element signature="e#8548#8549#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/main/scene/FocusingTestScreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="91" column="12" selection-start-line="91" selection-start-column="12" selection-end-line="91" selection-end-column="12" />
+          <folding>
+            <element signature="e#9797#9798#0" expanded="true" />
+            <element signature="e#9849#9850#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
     </entry>
   </component>
   <component name="masterDetails">

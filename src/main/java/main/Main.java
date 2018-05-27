@@ -2,7 +2,6 @@ package main;
 
 import com.google.gson.Gson;
 import com.intel.bluetooth.RemoteDeviceHelper;
-import com.sun.org.glassfish.external.arc.Stability;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
@@ -72,6 +71,8 @@ public class Main extends Application {
         if (bluetoothListeners != null) {
             bluetoothListeners.clear();
         }
+
+        screen.bluetoothListener();
 
         replaceScene(screen.getScene());
     }
@@ -174,8 +175,7 @@ public class Main extends Application {
     }
 
     public void toBluetooth() {
-    //    setScreen(new BluetoothScreen(this));
-        toTests();
+        setScreen(new BluetoothScreen(this));
     }
 
     public void toRegister() {
@@ -227,7 +227,6 @@ public class Main extends Application {
                 while (true) {
 
                     double value = dataInputStream.readDouble();
-                    //        System.out.println("Received: " + value);
 
                     if (isX) {
                         x.add(value);
@@ -242,7 +241,6 @@ public class Main extends Application {
                         if (isX) { // when we have x + y arrays
                             xCurrent = new ArrayList<>(x.subList(x.size() - PACKAGE_SIZE, x.size()));
                             yCurrent = new ArrayList<>(y.subList(y.size() - PACKAGE_SIZE, y.size()));
-                            System.out.println("moveCircle");
 
                             sendToBluetoothListeners(xCurrent, yCurrent);
                         }
@@ -263,6 +261,7 @@ public class Main extends Application {
                 // socket closed on server side
                 //    eofException.printStackTrace();
                 stopBluetooth();
+                eofException.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -295,49 +294,46 @@ public class Main extends Application {
                     if (currentX < thresholdMin && currentX > -thresholdMin && currentY < thresholdMin && currentY > -thresholdMin) {
                         Log.i(BLUETOOTH_TAG, "onCenter");
                         bluetoothLock = false;
-                        listener.onCenter();
+                        Platform.runLater(listener::onCenter);
                     }
 
                     if (bluetoothLock) {
                         return;
                     }
 
-                    if (bluetoothLock) {
-                        return;
-                    }
 
                     if (currentX > thresholdMax && currentY < thresholdMax && currentY > -thresholdMax) { // left
                         bluetoothLock = true;
                         Log.i(BLUETOOTH_TAG, "onLeft");
-                        listener.onLeft();
+                        Platform.runLater(listener::onLeft);
                     } else if (currentX > thresholdMax && currentY > thresholdMax) { // bottom left
                         bluetoothLock = true;
                         Log.i(BLUETOOTH_TAG, "onBottomLeft");
-                        listener.onBottomLeft();
+                        Platform.runLater(listener::onBottomLeft);
                     } else if (currentX > thresholdMax && currentY < -thresholdMax) { // top left
                         bluetoothLock = true;
                         Log.i(BLUETOOTH_TAG, "onTopLeft");
-                        listener.onTopLeft();
+                        Platform.runLater(listener::onTopLeft);
                     } else if (currentX < -thresholdMax && currentY < thresholdMax && currentY > -thresholdMax) { // right
                         bluetoothLock = true;
                         Log.i(BLUETOOTH_TAG, "onRight");
-                        listener.onRight();
+                        Platform.runLater(listener::onRight);
                     } else if (currentX < -thresholdMax && currentY > thresholdMax) { // bottom right
                         bluetoothLock = true;
                         Log.i(BLUETOOTH_TAG, "onBottomRight");
-                        listener.onBottomRight();
+                        Platform.runLater(listener::onBottomRight);
                     } else if (currentX < -thresholdMax && currentY < -thresholdMax) { // top right
                         bluetoothLock = true;
                         Log.i(BLUETOOTH_TAG, "onTopRight");
-                        listener.onTopRight();
+                        Platform.runLater(listener::onTopRight);
                     } else if (currentY > thresholdMax && currentX < thresholdMax && currentX > -thresholdMax) { // bottom
                         bluetoothLock = true;
                         Log.i(BLUETOOTH_TAG, "onBottom");
-                        listener.onBottom();
+                        Platform.runLater(listener::onBottom);
                     } else if (currentY < -thresholdMax && currentX < thresholdMax && currentX > -thresholdMax) { // top
                         bluetoothLock = true;
                         Log.i(BLUETOOTH_TAG, "onTop");
-                        listener.onTop();
+                        Platform.runLater(listener::onTop);
                     }
 
 

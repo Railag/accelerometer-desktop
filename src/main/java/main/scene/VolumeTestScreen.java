@@ -65,8 +65,6 @@ public class VolumeTestScreen extends BaseScreen implements BluetoothEventListen
 
     @Override
     protected void initViews() {
-        main.registerBluetoothListener(this);
-
         testBackground = (AnchorPane) scene.lookup("#testBackground");
         signsGrid = (TilePane) scene.lookup("#signsGrid");
         sign1 = (ImageView) scene.lookup("#sign1");
@@ -367,5 +365,10 @@ public class VolumeTestScreen extends BaseScreen implements BluetoothEventListen
 
     @Override
     public void onCenter() {
+    }
+
+    @Override
+    public void bluetoothListener() {
+        main.registerBluetoothListener(this);
     }
 }

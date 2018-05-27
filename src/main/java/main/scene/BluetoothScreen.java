@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 public class BluetoothScreen extends BaseScreen {
 
     private Button connectButton;
-    private Button discoverButton;
     private Circle circle;
     private ListView<String> list;
 
@@ -39,22 +38,18 @@ public class BluetoothScreen extends BaseScreen {
     @Override
     protected void initViews() {
         connectButton = (Button) scene.lookup("#connectButton");
-        discoverButton = (Button) scene.lookup("#discoverButton");
         circle = (Circle) scene.lookup("#circlee");
         list = (ListView<String>) scene.lookup("#list");
 
         list.setVisible(false);
         connectButton.setVisible(false);
 
+        startLoading();
+        if (discovered) {
+            stopBluetooth();
+        }
 
-        discoverButton.setOnAction(event -> {
-            startLoading();
-            if (discovered) {
-                stopBluetooth();
-            }
-
-            bluetoothInit();
-        });
+        bluetoothInit();
 
         connectButton.setOnAction(event -> {
             deviceName = list.getSelectionModel().getSelectedItem();
