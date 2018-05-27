@@ -199,7 +199,7 @@ public class Main extends Application {
     }
 
     public void toVolumeTest() {
-        // TODO
+        setScreen(new VolumeTestScreen(this));
     }
 
     class ProcessConnectionThread extends Thread {
