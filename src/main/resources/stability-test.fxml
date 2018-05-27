@@ -5,7 +5,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane fx:id="testBackground" prefHeight="386.0" prefWidth="322.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.stage.Screen?>
+<AnchorPane fx:id="testBackground" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" prefWidth="${screen.visualBounds.width}"
+            prefHeight="${screen.visualBounds.height}">
+    <fx:define>
+        <Screen fx:factory="getPrimary" fx:id="screen"/>
+    </fx:define>
     <Button fx:id="leftButton" layoutY="360.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="210.0" />
     <Button fx:id="rightButton" layoutX="210.0" layoutY="360.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="210.0" />
     <Label fx:id="number" layoutX="196.0" layoutY="176.0" text="5" />

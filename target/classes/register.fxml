@@ -5,7 +5,12 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="308.0" prefWidth="275.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.stage.Screen?>
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" prefWidth="${screen.visualBounds.width}"
+            prefHeight="${screen.visualBounds.height}">
+    <fx:define>
+        <Screen fx:factory="getPrimary" fx:id="screen"/>
+    </fx:define>
     <Button fx:id="submit" layoutX="82.0" layoutY="252.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="108.0" text="Войти" />
     <TextField fx:id="login" layoutX="25.0" layoutY="62.0" prefHeight="25.0" prefWidth="221.0" promptText="Логин" />
    <PasswordField fx:id="password" layoutX="25.0" layoutY="101.0" prefHeight="25.0" prefWidth="221.0" promptText="Пароль" />

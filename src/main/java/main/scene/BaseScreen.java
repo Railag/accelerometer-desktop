@@ -44,7 +44,7 @@ public class BaseScreen {
         progressIndicator.setVisible(false);
 
         Group group = new Group(content, progressIndicator);
-        scene = new Scene(group);
+        scene = new Scene(group, main.getWidth(), main.getHeight());
 
         scene.getStylesheets().add(
                 getClass().getResource("/css/application.css").toExternalForm());

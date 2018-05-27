@@ -5,7 +5,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.TilePane?>
 
-<AnchorPane prefHeight="386.0" prefWidth="322.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.stage.Screen?>
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" prefWidth="${screen.visualBounds.width}"
+            prefHeight="${screen.visualBounds.height}">
+    <fx:define>
+        <Screen fx:factory="getPrimary" fx:id="screen"/>
+    </fx:define>
     <ImageView fx:id="baseCircle" fitHeight="72.0" fitWidth="72.0" layoutX="348.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
     <TilePane fx:id="circlesGrid" layoutY="109.0" prefColumns="15" prefHeight="300.0" prefRows="11" prefWidth="796.0" />
     <Button fx:id="button1" layoutX="1.0" layoutY="688.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="1" />

@@ -95,7 +95,7 @@ public class Main extends Application {
         primaryStage.setY(primaryScreenBounds.getMinY());
         primaryStage.setWidth(width);
         primaryStage.setHeight(height);
-
+        primaryStage.setMaximized(true);
 
         User user = User.get();
         String token = user.getToken();

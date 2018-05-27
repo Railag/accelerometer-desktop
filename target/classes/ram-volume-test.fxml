@@ -4,7 +4,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.TilePane?>
 
-<AnchorPane fx:id="testBackground" prefHeight="386.0" prefWidth="322.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.stage.Screen?>
+<AnchorPane fx:id="testBackground" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" prefWidth="${screen.visualBounds.width}"
+            prefHeight="${screen.visualBounds.height}">
+    <fx:define>
+        <Screen fx:factory="getPrimary" fx:id="screen"/>
+    </fx:define>
     <ImageView fx:id="sign1" fitHeight="40.0" fitWidth="48.0" layoutX="14.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" />
     <ImageView fx:id="sign2" fitHeight="40.0" fitWidth="48.0" layoutX="62.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true" />
     <ImageView fx:id="sign3" fitHeight="40.0" fitWidth="48.0" layoutX="109.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" />

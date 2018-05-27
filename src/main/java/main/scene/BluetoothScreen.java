@@ -17,8 +17,7 @@ import java.util.stream.Collectors;
 public class BluetoothScreen extends BaseScreen {
 
     private Button connectButton;
-    private Circle circle;
-    private ListView<String> list;
+     ListView<String> list;
 
     private ArrayList<RemoteDevice> remoteDevices = new ArrayList<>();
     private ArrayList<ServiceRecord> serviceRecords = new ArrayList<>();
@@ -38,7 +37,6 @@ public class BluetoothScreen extends BaseScreen {
     @Override
     protected void initViews() {
         connectButton = (Button) scene.lookup("#connectButton");
-        circle = (Circle) scene.lookup("#circlee");
         list = (ListView<String>) scene.lookup("#list");
 
         list.setVisible(false);
@@ -240,7 +238,5 @@ public class BluetoothScreen extends BaseScreen {
         }
 
         discovered = false;
-
-        Platform.runLater(() -> circle.setVisible(false));
     }
 }
