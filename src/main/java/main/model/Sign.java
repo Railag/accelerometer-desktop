@@ -73,6 +73,31 @@ public enum Sign {
         }
     }
 
+    private int counter;
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public void increase() {
+        counter++;
+    }
+
+    public static List<Sign> randomSigns(int min, int max) {
+        int size = random.nextInt((max - min) + 1) + min;
+
+        List<Sign> signs = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            Sign sign = randomEnum(Sign.class);
+            if (!signs.contains(sign)) {
+                signs.add(sign);
+            } else {
+                i--;
+            }
+        }
+        return signs;
+    }
+
     private boolean wasShown;
     private boolean selected;
     private boolean chosen;
@@ -87,6 +112,7 @@ public enum Sign {
 
     public void reset() {
         wasShown = false;
+        counter = 0;
     }
 
     public static List<Sign> randomSigns(int size) {

@@ -45,6 +45,9 @@ public class BaseScreen {
 
         Group group = new Group(content, progressIndicator);
         scene = new Scene(group);
+
+        scene.getStylesheets().add(
+                getClass().getResource("/css/application.css").toExternalForm());
     }
 
     public Scene getScene() {

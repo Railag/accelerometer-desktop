@@ -14,5 +14,5 @@
     <ImageView fx:id="sign7" fitHeight="40.0" fitWidth="48.0" layoutX="117.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" />
     <ImageView fx:id="sign8" fitHeight="40.0" fitWidth="48.0" layoutX="165.0" layoutY="96.0" pickOnBounds="true" preserveRatio="true" />
     <ImageView fx:id="sign9" fitHeight="40.0" fitWidth="48.0" layoutX="30.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true" />
-    <TilePane fx:id="signsGrid" layoutX="4.0" layoutY="2.0" prefHeight="380.0" prefWidth="322.0" />
+    <TilePane fx:id="signsGrid" layoutX="4.0" layoutY="2.0" prefHeight="380.0" prefWidth="628.0" />
 </AnchorPane>

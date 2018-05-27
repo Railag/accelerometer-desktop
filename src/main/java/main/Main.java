@@ -202,6 +202,10 @@ public class Main extends Application {
         setScreen(new VolumeTestScreen(this));
     }
 
+    public void toRamTest() {
+        setScreen(new RamVolumeTestScreen(this));
+    }
+
     class ProcessConnectionThread extends Thread {
 
         private StreamConnection mConnection;

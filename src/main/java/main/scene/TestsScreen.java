@@ -10,6 +10,7 @@ public class TestsScreen extends BaseScreen {
     private Button distributionButton;
     private Button stabilityButton;
     private Button volumeButton;
+    private Button ramVolumeButton;
 
     public TestsScreen(Main main) {
         super(main, "tests.fxml");
@@ -21,6 +22,7 @@ public class TestsScreen extends BaseScreen {
         distributionButton = (Button) scene.lookup("#distributionButton");
         stabilityButton = (Button) scene.lookup("#stabilityButton");
         volumeButton = (Button) scene.lookup("#volumeButton");
+        ramVolumeButton = (Button) scene.lookup("#ramVolumeButton");
 
         focusingButton.setOnAction(event -> {
             main.toFocusingTest();
@@ -36,6 +38,10 @@ public class TestsScreen extends BaseScreen {
 
         volumeButton.setOnAction(event -> {
             main.toVolumeTest();
+        });
+
+        ramVolumeButton.setOnAction(event -> {
+            main.toRamTest();
         });
     }
 }

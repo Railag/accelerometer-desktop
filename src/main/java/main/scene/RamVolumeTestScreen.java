@@ -20,17 +20,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class VolumeTestScreen extends BaseScreen implements BluetoothEventListener {
+public class RamVolumeTestScreen extends BaseScreen implements BluetoothEventListener {
 
-    private final static int MAX_BACKGROUNDS = 1;
+    private final static int MAX_BACKGROUNDS = 10;
 
-    private final static int SIGNS_TYPES = 12;
+    private final static int MIN_SIGNS = 5;
+    private final static int MAX_SIGNS = 9;
 
     private final static int SIGNS_PER_LINE = 5;
 
     private AnchorPane testBackground;
     private TilePane signsGrid;
-    private ImageView sign1, sign2, sign3, sign4, sign5, sign6, sign7, sign8, sign9, sign10, sign11, sign12;
+    private ImageView sign1, sign2, sign3, sign4, sign5, sign6, sign7, sign8, sign9;
     private ImageView[] signImages;
 
     private final static String[] backgroundStrings = {"background.png", "background.png", "background.png", "background.png", "background.png",
@@ -59,8 +60,8 @@ public class VolumeTestScreen extends BaseScreen implements BluetoothEventListen
         void onSignSelected(Sign sign);
     }
 
-    public VolumeTestScreen(Main main) {
-        super(main, "attention-volume-test.fxml");
+    public RamVolumeTestScreen(Main main) {
+        super(main, "ram-volume-test.fxml");
     }
 
     @Override
@@ -78,11 +79,8 @@ public class VolumeTestScreen extends BaseScreen implements BluetoothEventListen
         sign7 = (ImageView) scene.lookup("#sign7");
         sign8 = (ImageView) scene.lookup("#sign8");
         sign9 = (ImageView) scene.lookup("#sign9");
-        sign10 = (ImageView) scene.lookup("#sign10");
-        sign11 = (ImageView) scene.lookup("#sign11");
-        sign12 = (ImageView) scene.lookup("#sign12");
 
-        signImages = new ImageView[]{sign1, sign2, sign3, sign4, sign5, sign6, sign7, sign8, sign9, sign10, sign11, sign12};
+        signImages = new ImageView[]{sign1, sign2, sign3, sign4, sign5, sign6, sign7, sign8, sign9};
 
         time = System.nanoTime();
 
@@ -145,18 +143,18 @@ public class VolumeTestScreen extends BaseScreen implements BluetoothEventListen
     }
 
     private void setupSigns() {
-        List<Sign> signs = Sign.randomSigns(SIGNS_TYPES);
+        List<Sign> signs = Sign.randomSigns(MIN_SIGNS, MAX_SIGNS);
 
         for (Sign sign : signs) {
             while (true) {
-                int position = random.nextInt(SIGNS_TYPES);
+                int position = random.nextInt(MAX_SIGNS);
                 if (signImages[position].getImage() == null) {
                     signImages[position].setImage(loadImage("image/" + sign.getDrawableString()));
                     break;
                 }
             }
 
-            signsCounter.get(signsCounter.indexOf(sign)).setShown(true);
+            signsCounter.get(signsCounter.indexOf(sign)).increase();
         }
     }
 
@@ -183,25 +181,28 @@ public class VolumeTestScreen extends BaseScreen implements BluetoothEventListen
 
         time = System.nanoTime();
 
+        Sign mostVisibleSign = signsCounter.get(0);
+        for (Sign sign : signsCounter) {
+            if (sign.getCounter() > mostVisibleSign.getCounter()) {
+                mostVisibleSign = sign;
+            }
+        }
+
         signsCounter.get(0).setSelected(true);
 
+        final int maxCounter = mostVisibleSign.getCounter();
+
         listener = sign -> {
-            sign.setChosen(!sign.isChosen());
+            boolean isSuccess = sign.getCounter() == maxCounter;
 
-            int chosenCounter = 0;
-            for (Sign s : signsCounter) {
-                if (s.isChosen()) {
-                    chosenCounter++;
-                }
+            if (isSuccess) {
+                winsCount = 1;
             }
 
-            if (chosenCounter >= SIGNS_TYPES) {
-                toNextTest();
-            } else {
-                refreshSigns();
-            }
+            resultTime = Utils.calcTime(time);
+
+            sendResults(resultTime, winsCount);
         };
-
 
         refreshSigns();
 
@@ -352,8 +353,10 @@ public class VolumeTestScreen extends BaseScreen implements BluetoothEventListen
 
     @Override
     public void onTopRight() {
-        if (listener != null) {
-            listener.onSignSelected(signsCounter.get(currentSignSelection));
+        if (isSelection) {
+            if (listener != null) {
+                listener.onSignSelected(signsCounter.get(currentSignSelection));
+            }
         }
     }
 
